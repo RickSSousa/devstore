@@ -4,7 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getFeaturedProducts(): Promise<Product[]> {
-  const response = await api("/products/featured");
+  const response = await api("/products/featured", {
+    //com essa opção, o next.js vai fazer o cache da resposta por 1 hora, evitando que a api seja chamada a cada navegação/refresh
+    next: {
+      revalidate: 60 * 60,
+    },
+    //cache: 'no-store' caso queira desabilitar o cache
+  });
   const products = await response.json();
   return products;
 }
