@@ -2,7 +2,6 @@ import { api } from "@/data/api";
 import { Product } from "@/data/types/product";
 import { Metadata } from "next";
 import Image from "next/image";
-import { title } from "process";
 
 interface ProductProps {
   params: {
@@ -28,6 +27,17 @@ export async function generateMetadata({
   return {
     title: product.title,
   };
+}
+
+//essa função é chamada no momento da build e gera as páginas estáticas cacheadas no next, para que seja visível instantaneamente (SSG) - usado só pra coisas muito importantes, pois aumenta o tempo de build e não é recomendado
+export async function generateStaticParams() {
+  const response = await api(`/products/featured`);
+  const products: Product[] = await response.json();
+  return products.map((product) => {
+    return {
+      slug: product.slug,
+    };
+  });
 }
 
 export default async function ProductPage({ params }: ProductProps) {
