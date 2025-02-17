@@ -8,7 +8,10 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "devstore",
+  title: {
+    template: "%s | devstore", //essa config deixa o título da página dinâmico
+    default: "devstore",
+  },
 };
 
 export default function RootLayout({
